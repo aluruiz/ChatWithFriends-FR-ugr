@@ -16,49 +16,36 @@ import java.net.Socket;
  * @author Monica
  */
 public class Servidor {
+    public static void main(String[] args) {
+        // Puerto de escucha
+		int port=8989;
 
-  public static int ImprimirMenuEleccion(){
-    Scanner sc = new Scanner(System.in);
-    System.out.println("Menu de Eleccion: ");
-    System.out.println("Selecciona 1: En caso de comunicarte con Amigo.");
-    System.out.println("Selecciona 2: En caso de añadir Amigo.");
-    int numero;
-    
-    return numero;
-  }
-
-  public static boolean Identificarse(){
-    boolean esta_identificado = false;
-    return esta_identificado;
-  }
-
-  public static void MenuEleccion(int eleccion){
-    switch (eleccion) {
-      case 1:
-      //Comunicarte con un amigo
-      ;
-      case 2:
-      //Añadir un Amigo
-      ;
-      default:
-        System.out.println(" Esta opcion no es válida. ")
-        ;
+		try {
+			// Abrimos el socket en modo pasivo, escuchando el en puerto indicado por "port"                       
+                        
+                        //////////////////////////////////////////////////
+			ServerSocket socketServidor = new ServerSocket(port);
+			Socket socketServicio = null; 
+                        ////////////////////////////////////////////////// 
+			// Mientras ... siempre!
+			do {
+				// Aceptamos una nueva conexión con accept()
+				/////////////////////////////////////////////////
+                                    socketServicio = socketServidor.accept(); 
+                                    //////////////////////////////////////////////////
+                                    // Creamos un objeto de la clase Hebrita, pasándole como 
+                                    // argumento el nuevo socket, para que realice el procesamiento
+                                    // Este esquema permite que se puedan usar hebras más fácilmente.
+                                    Procesador procesador=new Procesador(socketServicio);
+                                    System.out.println("Se ha recibido una petición");
+                                    procesador.start();
+                                
+				
+			} while (true);
+			
+		} catch (IOException e) {
+			System.err.println("Error al escuchar en el puerto "+port);
+		}
     }
-  }
-
-  public static void AñadirAmigo(){
-      
-  }
-
-  public static void Comunicarse(){
-
-  }
-
-  public static void main(String[] args) {
-    int eleccion;
-    eleccion = ImprimirMenuEleccion();
-    MenuEleccion(eleccion);
-
-  }
 
 }
