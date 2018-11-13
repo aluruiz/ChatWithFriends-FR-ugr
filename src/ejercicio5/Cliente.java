@@ -88,9 +88,13 @@ public class Cliente {
                     break;
             }
             
-            /*if(puede_seguir){
-                
-            }*/
+            if(puede_seguir){
+                System.out.println("A que sala quieres conectarte:\n 037 - Sala Celeste\n 039 - Sala Azafran\n 216 - Sala Lavacaldaªn");
+                String sala = sc.nextLine();
+                BufferedReader inRd = new BufferedReader(new InputStreamReader(inputStream));
+                String salaElegida = inRd.readLine();
+                System.out.println("Array recibido: " + salaElegida);
+            }
             
         }catch (UnknownHostException e) {
               System.err.println("Error: Nombre de host no encontrado.");

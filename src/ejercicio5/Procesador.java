@@ -26,10 +26,20 @@ public class Procesador extends Thread{
     private InputStream inputStream;
     //stream de escritura
     private OutputStream outputStream;
+    
+    //Usuario online
+    Usuario online;
             
     //Base de Datos de Usuarios
-    public ArrayList<Usuario> usuarios = new ArrayList();
+    ArrayList<Usuario> usuarios = new ArrayList();
     
+    //Array de Conectados
+    ArrayList<Usuario> conectados = new ArrayList();
+    
+    //Array de Salas
+    ArrayList<Usuario> celeste = new ArrayList();
+    ArrayList<Usuario> azafran = new ArrayList();
+    ArrayList<Usuario> lavacalda = new ArrayList();
     
     //Constructor que tiene como parámetro una referencia al socket abierto por otra clase.
     public Procesador(Socket socketServicio){
@@ -55,28 +65,59 @@ public class Procesador extends Thread{
             //Dividimos el usuario y contraseña en partes
             String[] parts= identificacion.split("\\|");
             String codigo = parts[0];
-            String usuario = parts[1];
-            String contrasenia = parts[2];
-            System.out.println("Separado: Codigo=" + codigo + " Usuario=" + usuario + " Contraseña=" + contrasenia );
-            String autentificacion;
+            System.out.println("Separado: Codigo=" + codigo);
+            String autentificacion, usuario, contrasenia, mensaje;
             
             //Variable de envio
             PrintWriter outPrinter = new PrintWriter(outputStream, true);
             switch (codigo){
                 //Comprobar si el usuario esta en el sistema.
                 case "025": //pikachu
+                    usuario = parts[1];
+                    contrasenia = parts[2];
                     autentificacion = iniciarSesion(usuario, contrasenia);
                     System.out.println("Se ha intentado inciar sesion. Codigo producido=" + autentificacion);
                     //Enviamos el array de autentificacion
                     outPrinter.println(autentificacion);
                     System.out.println("Se ha enviado el codigo de iniciar sesion.");
+                    break;
                 //Darse de alta en el sistema.
                 case "133": //eevee
+                    usuario = parts[1];
+                    contrasenia = parts[2];
                     autentificacion = crearUsuario(usuario, contrasenia);
                     System.out.println("Se ha intentado crear Usuario. Codigo producido=" + autentificacion);
                     //Enviamos el array de autentificacion
                     outPrinter.println(autentificacion);
                     System.out.println("Se ha enviado el codigo de crear usuario.");
+                    break;
+                case "037": //Vulpix
+                    System.out.println("Entro en la sala Celeste");
+                    //meter usuario en array de usuarios de esa sala
+                    celeste.add(online);
+                    //mostrar gente en la sala
+                    for (Usuario user: celeste){
+                        System.out.println(user.nombre + ". ");
+                    }
+                    break;
+                case "039": //Jigglypuff
+                    System.out.println("Entro en la sala Azafran");
+                    //meter usuario en array de usuarios de esa sala
+                    azafran.add(online);
+                    //mostrar gente en la sala
+                    for (Usuario user: azafran){
+                        System.out.println(user.nombre + ". ");
+                    }
+                    break;
+                case "216": //Teddiursa
+                    System.out.println("Entro en la sala Lavacalda");
+                    //meter usuario en array de usuarios de esa sala
+                    lavacalda.add(online);
+                    //mostrar gente en la sala
+                    for (Usuario user: lavacalda){
+                        System.out.println(user.nombre + ". ");
+                    }
+                    break;
             }
 
         }catch (UnknownHostException e) {
@@ -91,6 +132,9 @@ public class Procesador extends Thread{
         for (Usuario users : usuarios) {
             if (users.nombre.equals(user) && users.password.equals(pass)){
                 System.out.println("Ha salido bien de iniciar sesion");
+                //Se ha conseguido identificar y lo añadimos a la lista de conectados
+                conectados.add(users);
+                online = users;
                 return "417"; // inicio de sesion correcto.
             }
         }
@@ -107,7 +151,12 @@ public class Procesador extends Thread{
                 return "155"; // nombre de usuario cogido
             }
         }
+        //Lo añadimos a la lista de usuarios
         usuarios.add(new Usuario(user,pass));
+        //Lo añadimos a la lista de conectados
+        conectados.add(new Usuario(user,pass));
+        online = new Usuario(user, pass);
+        
         System.out.println("Ha salido bien de crear usuario");
         return "152"; //se ha creado el nuevo usuario
     }
