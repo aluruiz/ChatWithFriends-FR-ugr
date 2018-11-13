@@ -28,7 +28,8 @@ public class Procesador extends Thread{
     private OutputStream outputStream;
             
     //Base de Datos de Usuarios
-    ArrayList<Usuario> usuarios = new ArrayList();
+    public ArrayList<Usuario> usuarios = new ArrayList();
+    
     
     //Constructor que tiene como parámetro una referencia al socket abierto por otra clase.
     public Procesador(Socket socketServicio){
@@ -39,6 +40,9 @@ public class Procesador extends Thread{
     @Override
     public void run(){
         try{
+            //Inicializar Usuario 
+            inicializarUsuarios();
+            
             //obtiene los flujos de escritura/lectura
             inputStream=socketServicio.getInputStream();
             outputStream=socketServicio.getOutputStream();
@@ -106,6 +110,16 @@ public class Procesador extends Thread{
         usuarios.add(new Usuario(user,pass));
         System.out.println("Ha salido bien de crear usuario");
         return "152"; //se ha creado el nuevo usuario
+    }
+    
+    private void inicializarUsuarios(){
+        usuarios.add(new Usuario("ashketchum", "paleta"));
+        usuarios.add(new Usuario("teamrocket", "despegadenuevo"));
+        usuarios.add(new Usuario("oak","profesorguay"));
+        usuarios.add(new Usuario("misty","liderceleste"));
+        usuarios.add(new Usuario("brock","supercriador"));
+        usuarios.add(new Usuario("maya","hojaverdecity"));
+        usuarios.add(new Usuario("iris","teseliablanco"));
     }
 
 }
