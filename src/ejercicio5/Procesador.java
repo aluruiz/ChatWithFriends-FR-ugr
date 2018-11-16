@@ -56,68 +56,73 @@ public class Procesador extends Thread{
             //obtiene los flujos de escritura/lectura
             inputStream=socketServicio.getInputStream();
             outputStream=socketServicio.getOutputStream();
-           
+                   
             //Identificarse:
             //Lee el usuario y la contraseña:
             BufferedReader inReader = new BufferedReader(new InputStreamReader(inputStream));
-            String identificacion = inReader.readLine();
-            System.out.println("A separar: " + identificacion);
-            //Dividimos el usuario y contraseña en partes
-            String[] parts= identificacion.split("\\|");
-            String codigo = parts[0];
-            System.out.println("Separado: Codigo=" + codigo);
-            String autentificacion, usuario, contrasenia, mensaje;
-            
             //Variable de envio
             PrintWriter outPrinter = new PrintWriter(outputStream, true);
-            switch (codigo){
-                //Comprobar si el usuario esta en el sistema.
-                case "025": //pikachu
-                    usuario = parts[1];
-                    contrasenia = parts[2];
-                    autentificacion = iniciarSesion(usuario, contrasenia);
-                    System.out.println("Se ha intentado inciar sesion. Codigo producido=" + autentificacion);
-                    //Enviamos el array de autentificacion
-                    outPrinter.println(autentificacion);
-                    System.out.println("Se ha enviado el codigo de iniciar sesion.");
-                    break;
-                //Darse de alta en el sistema.
-                case "133": //eevee
-                    usuario = parts[1];
-                    contrasenia = parts[2];
-                    autentificacion = crearUsuario(usuario, contrasenia);
-                    System.out.println("Se ha intentado crear Usuario. Codigo producido=" + autentificacion);
-                    //Enviamos el array de autentificacion
-                    outPrinter.println(autentificacion);
-                    System.out.println("Se ha enviado el codigo de crear usuario.");
-                    break;
-                case "037": //Vulpix
-                    System.out.println("Entro en la sala Celeste");
-                    //meter usuario en array de usuarios de esa sala
-                    celeste.add(online);
-                    //mostrar gente en la sala
-                    for (Usuario user: celeste){
-                        System.out.println(user.nombre + ". ");
-                    }
-                    break;
-                case "039": //Jigglypuff
-                    System.out.println("Entro en la sala Azafran");
-                    //meter usuario en array de usuarios de esa sala
-                    azafran.add(online);
-                    //mostrar gente en la sala
-                    for (Usuario user: azafran){
-                        System.out.println(user.nombre + ". ");
-                    }
-                    break;
-                case "216": //Teddiursa
-                    System.out.println("Entro en la sala Lavacalda");
-                    //meter usuario en array de usuarios de esa sala
-                    lavacalda.add(online);
-                    //mostrar gente en la sala
-                    for (Usuario user: lavacalda){
-                        System.out.println(user.nombre + ". ");
-                    }
-                    break;
+            
+            String espera;
+            while( (espera = inReader.readLine()) != null ){
+                String identificacion = inReader.readLine();
+                System.out.println("A separar: " + identificacion);
+                //Dividimos el usuario y contraseña en partes
+                String[] parts= identificacion.split("\\|");
+                String codigo = parts[0];
+                System.out.println("Separado: Codigo=" + codigo);
+                String autentificacion, usuario, contrasenia, mensaje;
+
+
+                switch (codigo){
+                    //Comprobar si el usuario esta en el sistema.
+                    case "025": //pikachu
+                        usuario = parts[1];
+                        contrasenia = parts[2];
+                        autentificacion = iniciarSesion(usuario, contrasenia);
+                        System.out.println("Se ha intentado inciar sesion. Codigo producido=" + autentificacion);
+                        //Enviamos el array de autentificacion
+                        outPrinter.println(autentificacion);
+                        System.out.println("Se ha enviado el codigo de iniciar sesion.");
+                        break;
+                    //Darse de alta en el sistema.
+                    case "133": //eevee
+                        usuario = parts[1];
+                        contrasenia = parts[2];
+                        autentificacion = crearUsuario(usuario, contrasenia);
+                        System.out.println("Se ha intentado crear Usuario. Codigo producido=" + autentificacion);
+                        //Enviamos el array de autentificacion
+                        outPrinter.println(autentificacion);
+                        System.out.println("Se ha enviado el codigo de crear usuario.");
+                        break;
+                    case "037": //Vulpix
+                        System.out.println("Entro en la sala Celeste");
+                        //meter usuario en array de usuarios de esa sala
+                        celeste.add(online);
+                        //mostrar gente en la sala
+                        for (Usuario user: celeste){
+                            System.out.println(user.nombre + ". ");
+                        }
+                        break;
+                    case "039": //Jigglypuff
+                        System.out.println("Entro en la sala Azafran");
+                        //meter usuario en array de usuarios de esa sala
+                        azafran.add(online);
+                        //mostrar gente en la sala
+                        for (Usuario user: azafran){
+                            System.out.println(user.nombre + ". ");
+                        }
+                        break;
+                    case "216": //Teddiursa
+                        System.out.println("Entro en la sala Lavacalda");
+                        //meter usuario en array de usuarios de esa sala
+                        lavacalda.add(online);
+                        //mostrar gente en la sala
+                        for (Usuario user: lavacalda){
+                            System.out.println(user.nombre + ". ");
+                        }
+                        break;
+                }
             }
 
         }catch (UnknownHostException e) {

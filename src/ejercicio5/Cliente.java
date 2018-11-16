@@ -39,7 +39,7 @@ public class Cliente {
         
         //Autentificacion correcta
         boolean puede_seguir = false;
-
+        
         try{
             //Creamos un socket que se conecte con host y port
             socketServicio = new Socket(host,port);
@@ -95,6 +95,7 @@ public class Cliente {
                 String salaElegida = inRd.readLine();
                 System.out.println("Array recibido: " + salaElegida);
             }
+            socketServicio.close();
             
         }catch (UnknownHostException e) {
               System.err.println("Error: Nombre de host no encontrado.");
