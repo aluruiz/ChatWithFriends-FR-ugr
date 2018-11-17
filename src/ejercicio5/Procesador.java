@@ -26,34 +26,34 @@ public class Procesador extends Thread{
     private InputStream inputStream;
     //stream de escritura
     private OutputStream outputStream;
-    
+
     //Usuario online
     Usuario online;
-    
+
     //Servidor
     private Servidor servidor;
-                
+
     //Constructor que tiene como parámetro una referencia al socket abierto por otra clase.
     public Procesador(Socket socketServicio, Servidor servidor){
       this.socketServicio = socketServicio;
-      this.servidor = servidor; 
+      this.servidor = servidor;
     }
-    
+
     //Aquí es donde se realiza el procesamiento realmente:
     @Override
     public void run(){
         try{
-            
+
             //obtiene los flujos de escritura/lectura
             inputStream=socketServicio.getInputStream();
             outputStream=socketServicio.getOutputStream();
-                   
+
             //Identificarse:
             //Lee el usuario y la contraseña:
             BufferedReader inReader = new BufferedReader(new InputStreamReader(inputStream));
             //Variable de envio
             PrintWriter outPrinter = new PrintWriter(outputStream, true);
-            
+
             String identificacion;
             while( (identificacion = inReader.readLine()) != null ){ //
                 System.out.println("A separar: " + identificacion);
@@ -116,7 +116,8 @@ public class Procesador extends Thread{
                         }
                         break;
                     case "572": //Minccino
-                        mensaje = parts[1]; 
+                        mensaje = parts[1];
+                        ArrayList<Usuario> salaactual = null;
                         if (online.sala == "celeste"){
                             salaactual = servidor.celeste;
                         }
@@ -135,7 +136,7 @@ public class Procesador extends Thread{
                         }
                         break;
                     case "393": //Piplup
-                        //outPrinter.println("Sesión cerrada");                        
+                        //outPrinter.println("Sesión cerrada");
                         if (online.sala == "celeste"){
                             salaactual = servidor.celeste;
                         }
@@ -163,7 +164,7 @@ public class Procesador extends Thread{
               System.err.println("Error de entrada/salida al abrir el socket.");
         }
     }
-    
+
     String iniciarSesion(String user, String pass) {
         System.out.println("Ha entrado en inciar sesion.");
         for (Usuario users : servidor.usuarios) {
@@ -180,8 +181,8 @@ public class Procesador extends Thread{
         System.out.println("Va ha salir mal de iniciar sesion");
         return "427";
     }
-    
-    
+
+
         String crearUsuario (String user, String pass){
         System.out.println("Ha entrado en crear usuario.");
         for (Usuario users : servidor.usuarios) {
