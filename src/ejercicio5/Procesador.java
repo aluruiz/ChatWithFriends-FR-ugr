@@ -63,9 +63,8 @@ public class Procesador extends Thread{
             //Variable de envio
             PrintWriter outPrinter = new PrintWriter(outputStream, true);
             
-            String espera;
-            while( (espera = inReader.readLine()) != null ){
-                String identificacion = inReader.readLine();
+            String identificacion;
+            while( (identificacion = inReader.readLine()) != null ){
                 System.out.println("A separar: " + identificacion);
                 //Dividimos el usuario y contraseña en partes
                 String[] parts= identificacion.split("\\|");
@@ -76,7 +75,7 @@ public class Procesador extends Thread{
 
                 switch (codigo){
                     //Comprobar si el usuario esta en el sistema.
-                    case "025": //pikachu
+                    case "025": //Pikachu
                         usuario = parts[1];
                         contrasenia = parts[2];
                         autentificacion = iniciarSesion(usuario, contrasenia);
@@ -86,7 +85,7 @@ public class Procesador extends Thread{
                         System.out.println("Se ha enviado el codigo de iniciar sesion.");
                         break;
                     //Darse de alta en el sistema.
-                    case "133": //eevee
+                    case "133": //Eevee
                         usuario = parts[1];
                         contrasenia = parts[2];
                         autentificacion = crearUsuario(usuario, contrasenia);

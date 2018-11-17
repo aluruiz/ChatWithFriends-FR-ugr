@@ -91,8 +91,9 @@ public class Cliente {
             if(puede_seguir){
                 System.out.println("A que sala quieres conectarte:\n 037 - Sala Celeste\n 039 - Sala Azafran\n 216 - Sala Lavacaldaªn");
                 String sala = sc.nextLine();
-                BufferedReader inRd = new BufferedReader(new InputStreamReader(inputStream));
-                String salaElegida = inRd.readLine();
+                outPrinter.println(sala);
+                //BufferedReader inRd = new BufferedReader(new InputStreamReader(inputStream));
+                String salaElegida = inReader.readLine();
                 System.out.println("Array recibido: " + salaElegida);
             }
             socketServicio.close();
