@@ -29,29 +29,20 @@ public class Procesador extends Thread{
     
     //Usuario online
     Usuario online;
-            
-    //Base de Datos de Usuarios
-    ArrayList<Usuario> usuarios = new ArrayList();
     
-    //Array de Conectados
-    ArrayList<Usuario> conectados = new ArrayList();
-    
-    //Array de Salas
-    ArrayList<Usuario> celeste = new ArrayList();
-    ArrayList<Usuario> azafran = new ArrayList();
-    ArrayList<Usuario> lavacalda = new ArrayList();
-    
+    //Servidor
+    private Servidor servidor;
+                
     //Constructor que tiene como parámetro una referencia al socket abierto por otra clase.
-    public Procesador(Socket socketServicio){
+    public Procesador(Socket socketServicio, Servidor servidor){
       this.socketServicio = socketServicio;
+      this.servidor = servidor; 
     }
     
     //Aquí es donde se realiza el procesamiento realmente:
     @Override
     public void run(){
         try{
-            //Inicializar Usuario 
-            inicializarUsuarios();
             
             //obtiene los flujos de escritura/lectura
             inputStream=socketServicio.getInputStream();
@@ -64,7 +55,7 @@ public class Procesador extends Thread{
             PrintWriter outPrinter = new PrintWriter(outputStream, true);
             
             String identificacion;
-            while( (identificacion = inReader.readLine()) != null ){
+            while( (identificacion = inReader.readLine()) != null ){ //
                 System.out.println("A separar: " + identificacion);
                 //Dividimos el usuario y contraseña en partes
                 String[] parts= identificacion.split("\\|");
@@ -97,29 +88,53 @@ public class Procesador extends Thread{
                     case "037": //Vulpix
                         System.out.println("Entro en la sala Celeste");
                         //meter usuario en array de usuarios de esa sala
-                        celeste.add(online);
+                        servidor.celeste.add(online);
+                        online.sala = "celeste";
                         //mostrar gente en la sala
-                        for (Usuario user: celeste){
+                        for (Usuario user: servidor.celeste){
                             System.out.println(user.nombre + ". ");
                         }
                         break;
                     case "039": //Jigglypuff
                         System.out.println("Entro en la sala Azafran");
                         //meter usuario en array de usuarios de esa sala
-                        azafran.add(online);
+                        servidor.azafran.add(online);
+                        online.sala = "azafran";
                         //mostrar gente en la sala
-                        for (Usuario user: azafran){
+                        for (Usuario user: servidor.azafran){
                             System.out.println(user.nombre + ". ");
                         }
                         break;
                     case "216": //Teddiursa
                         System.out.println("Entro en la sala Lavacalda");
                         //meter usuario en array de usuarios de esa sala
-                        lavacalda.add(online);
+                        servidor.lavacalda.add(online);
+                        online.sala = "lavacalda";
                         //mostrar gente en la sala
-                        for (Usuario user: lavacalda){
+                        for (Usuario user: servidor.lavacalda){
                             System.out.println(user.nombre + ". ");
                         }
+                        break;
+                    case "572": //Minccino
+                        mensaje = parts[1];
+                        ArrayList<Usuario> salaactual = null; 
+                        if (online.sala == "celeste"){
+                            salaactual = servidor.celeste;
+                        }
+                        else if (online.sala == "azafran"){
+                            salaactual = servidor.azafran;
+                        }
+                        else if (online.sala == "lavacalda"){
+                            salaactual = servidor.lavacalda;
+                        }
+                        for (Usuario user: salaactual){
+                            if (user.nombre != (online.nombre)){
+                            OutputStream salaoutputStream = user.sesion.getOutputStream();
+                            PrintWriter salaoutPrinter = new PrintWriter(salaoutputStream, true);
+                            salaoutPrinter.println(online.nombre + ": " + mensaje);
+                            }
+                        }
+                    case "393": //Piplup
                         break;
                 }
             }
@@ -133,12 +148,13 @@ public class Procesador extends Thread{
     
     String iniciarSesion(String user, String pass) {
         System.out.println("Ha entrado en inciar sesion.");
-        for (Usuario users : usuarios) {
+        for (Usuario users : servidor.usuarios) {
             if (users.nombre.equals(user) && users.password.equals(pass)){
                 System.out.println("Ha salido bien de iniciar sesion");
                 //Se ha conseguido identificar y lo añadimos a la lista de conectados
-                conectados.add(users);
+                servidor.conectados.add(users);
                 online = users;
+                online.sesion = socketServicio;
                 return "417"; // inicio de sesion correcto.
             }
         }
@@ -147,32 +163,23 @@ public class Procesador extends Thread{
         return "427";
     }
     
-    String crearUsuario (String user, String pass){
+    
+        String crearUsuario (String user, String pass){
         System.out.println("Ha entrado en crear usuario.");
-        for (Usuario users : usuarios) {
+        for (Usuario users : servidor.usuarios) {
             if (users.nombre.equals(user)){
                 System.out.println("Va ha salir mal de crear usuario");
                 return "155"; // nombre de usuario cogido
             }
         }
         //Lo añadimos a la lista de usuarios
-        usuarios.add(new Usuario(user,pass));
+        servidor.usuarios.add(new Usuario(user,pass));
         //Lo añadimos a la lista de conectados
-        conectados.add(new Usuario(user,pass));
+        servidor.conectados.add(new Usuario(user,pass));
         online = new Usuario(user, pass);
-        
+        online.sesion = socketServicio;
         System.out.println("Ha salido bien de crear usuario");
         return "152"; //se ha creado el nuevo usuario
-    }
-    
-    private void inicializarUsuarios(){
-        usuarios.add(new Usuario("ashketchum", "paleta"));
-        usuarios.add(new Usuario("teamrocket", "despegadenuevo"));
-        usuarios.add(new Usuario("oak","profesorguay"));
-        usuarios.add(new Usuario("misty","liderceleste"));
-        usuarios.add(new Usuario("brock","supercriador"));
-        usuarios.add(new Usuario("maya","hojaverdecity"));
-        usuarios.add(new Usuario("iris","teseliablanco"));
     }
 
 }

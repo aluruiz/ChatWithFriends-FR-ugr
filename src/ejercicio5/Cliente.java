@@ -39,6 +39,8 @@ public class Cliente {
         
         //Autentificacion correcta
         boolean puede_seguir = false;
+        //Quiere enviar mensajes
+        boolean conectado = false;
         
         try{
             //Creamos un socket que se conecte con host y port
@@ -89,12 +91,25 @@ public class Cliente {
             }
             
             if(puede_seguir){
-                System.out.println("A que sala quieres conectarte:\n 037 - Sala Celeste\n 039 - Sala Azafran\n 216 - Sala Lavacaldaªn");
+                System.out.println("A que sala quieres conectarte:\n 037 - Sala Celeste\n 039 - Sala Azafran\n 216 - Sala Lavacalda");
                 String sala = sc.nextLine();
                 outPrinter.println(sala);
                 //BufferedReader inRd = new BufferedReader(new InputStreamReader(inputStream));
-                String salaElegida = inReader.readLine();
-                System.out.println("Array recibido: " + salaElegida);
+                /*String salaElegida = inReader.readLine();
+                System.out.println("Array recibido: " + salaElegida);*/
+                //Aqui va un mensaje de que se ha conectado debidamente a la sala.
+                conectado = true;
+                System.out.println("Mensaje que quieres enviar a la sala:572|Saludo la sala");
+                String mensaje = sc.nextLine(); 
+                outPrinter.println(mensaje);
+                while(conectado){
+                    String mehanenviadomensaje = inReader.readLine();
+                    System.out.println(mehanenviadomensaje);
+                    System.out.println("Mensaje que quieres enviar a la sala:572|[Mensaje a mandar] o 393 para salir de la sala (Solo un mensaje hasta que obtengas respuesta).");
+                    mensaje = sc.nextLine(); 
+                    outPrinter.println(mensaje);
+                }
+                
             }
             socketServicio.close();
             

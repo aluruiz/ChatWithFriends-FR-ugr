@@ -5,6 +5,8 @@
  */
 package ejercicio5;
 
+import java.net.Socket;
+
 /**
  *
  * @author Paula Ruiz
@@ -12,6 +14,8 @@ package ejercicio5;
 public class Usuario {
     String nombre;
     String password;
+    String sala;
+    Socket sesion; 
 
     Usuario(String usuario, String password){
         this.nombre = usuario;
