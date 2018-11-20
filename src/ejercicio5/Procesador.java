@@ -117,7 +117,6 @@ public class Procesador extends Thread{
                         break;
                     case "572": //Minccino
                         mensaje = parts[1];
-                        ArrayList<Usuario> salaactual = null;
                         if (online.sala == "celeste"){
                             salaactual = servidor.celeste;
                         }
