@@ -7,10 +7,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 //
-// YodafyServidorConcurrente
+// YodafyServidorConcurrente_3
 // (CC) jjramos, 2012
 //
-public class YodafyServidorConcurrente {
+public class YodafyServidorConcurrente_3 {
 
 	public static void main(String[] args) {
 
@@ -30,10 +30,10 @@ public class YodafyServidorConcurrente {
 				/////////////////////////////////////////////////
                                     socketServicio = socketServidor.accept(); 
                                     //////////////////////////////////////////////////
-                                    // Creamos un objeto de la clase Hebrita, pasándole como 
+                                    // Creamos un objeto de la clase Hebrita_3, pasándole como 
                                     // argumento el nuevo socket, para que realice el procesamiento
                                     // Este esquema permite que se puedan usar hebras más fácilmente.
-                                    Hebrita procesador=new Hebrita(socketServicio);
+                                    Hebrita_3 procesador=new Hebrita_3(socketServicio);
                                     System.out.println("Se ha recibido una petición");
                                     procesador.start();
                                 

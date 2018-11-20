@@ -1,4 +1,4 @@
-package servidor.ejercicio2;
+package ejercicio2;
 
 
 import java.io.IOException;
@@ -8,10 +8,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 //
-// YodafyServidorIterativo
+// YodafyServidorIterativo_2
 // (CC) jjramos, 2012
 //
-public class YodafyServidorIterativo {
+public class YodafyServidorIterativo_2 {
 
 	public static void main(String[] args) {
             
@@ -38,10 +38,10 @@ public class YodafyServidorIterativo {
 				/////////////////////////////////////////////////
 				socketServicio = socketServidor.accept(); 
 				//////////////////////////////////////////////////
-				// Creamos un objeto de la clase ProcesadorYodafy, pasándole como 
+				// Creamos un objeto de la clase ProcesadorYodafy_2, pasándole como 
 				// argumento el nuevo socket, para que realice el procesamiento
 				// Este esquema permite que se puedan usar hebras más fácilmente.
-				ProcesadorYodafy procesador=new ProcesadorYodafy(socketServicio);
+				ProcesadorYodafy_2 procesador=new ProcesadorYodafy_2(socketServicio);
 				procesador.procesa();
 				
 			} while (true);

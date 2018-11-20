@@ -1,5 +1,4 @@
-package cliente.ejercicio3;
-
+package ejercicio1;
 //
 // YodafyServidorIterativo
 // (CC) jjramos, 2012
@@ -13,13 +12,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class YodafyClienteTCP {
+public class YodafyClienteTCP_1 {
 
 	public static void main(String[] args) {
 		
 		byte []buferEnvio;
 		byte []buferRecepcion=new byte[256];
 		int bytesLeidos=0;
+		
                         
 		// Nombre del host donde se ejecuta el servidor:
 		String host="localhost";
@@ -57,7 +57,7 @@ public class YodafyClienteTCP {
 			// Leemos la respuesta del servidor. Para ello le pasamos un array de bytes, que intentará
 			// rellenar. El método "read(...)" devolverá el número de bytes leídos.
 			//////////////////////////////////////////////////////
-                        bytesLeidos = inputStream.read(buferRecepcion); 
+                        bytesLeidos = inputStream.read(buferRecepcion);
                         //////////////////////////////////////////////////////
 			
 			// MOstremos la cadena de caracteres recibidos:

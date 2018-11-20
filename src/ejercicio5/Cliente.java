@@ -45,6 +45,9 @@ public class Cliente {
             case "2":
                 mensaje="025"+"|"+nombre+"|"+pass;
                 break;
+            default:
+                System.out.println("Error. Eso no es una opcion.");
+                break;
         }
         return mensaje;
     }
@@ -63,6 +66,9 @@ public class Cliente {
                 break;
             case "3":
                 mensaje="216";
+                break;
+            default:
+                System.out.println("Error. Eso no es una opcion.");
                 break;
         }
         return mensaje;
@@ -93,11 +99,7 @@ public class Cliente {
             OutputStream outputStream = socketServicio.getOutputStream();
 
             //Identificarse:
-            //Insertar [CODIGO][DELIMITADOR][USUARIO][DELIMITADOR][CONTRASEÑA]:
-            //System.out.println("Codigos: \n 025 - Identificarse como usuario.\n 133 - Crear un nuevo usuario.");
-            //System.out.println("Inserte Usuario y Contraseña de la siguiente forma: [CODIGO][DELIMITADOR][USUARIO][DELIMITADOR = |][CONTRASEÑA]");
             String identificarse = MenuInicial();
-            //String identificarse = sc.nextLine();
 
             //Enviamos el array de identificacion
             System.out.println("Array a enviar: " + identificarse);
@@ -138,36 +140,28 @@ public class Cliente {
             }
 
             if(puede_seguir){
-                /*System.out.println("A que sala quieres conectarte:\n 037 - Sala Celeste\n 039 - Sala Azafran\n 216 - Sala Lavacalda");
-                String sala = sc.nextLine();*/
                 String sala = MenuSalas();
                 outPrinter.println(sala);
-                //BufferedReader inRd = new BufferedReader(new InputStreamReader(inputStream));
-                /*String salaElegida = inReader.readLine();
-                System.out.println("Array recibido: " + salaElegida);*/
                 //Aqui va un mensaje de que se ha conectado debidamente a la sala.
                 conectado = true;
-                System.out.println("Recuerda saludar");
-                String mensaje = sc.nextLine();
-                outPrinter.println("572|" + mensaje);
-
-                while(conectado){
-                    String mehanenviadomensaje = inReader.readLine();
-                    System.out.println(mehanenviadomensaje);
-                    System.out.println("Mensaje que quieres enviar a la sala, di bye si quieres salir: ");
-                    mensaje = sc.nextLine();
+                
+                ThreadRecibirChat hiloChat = new ThreadRecibirChat(inReader);
+                hiloChat.start();
+                System.out.println("Mensaje que quieres enviar a la sala, di bye si quieres salir: ");
+                
+                while(conectado){  
+                    String mensaje = sc.nextLine();
 
                     if(mensaje.equals("bye")){
                         outPrinter.println("393");
                         conectado = false;
+                        System.out.println("Has salido de la sala.");
+                        hiloChat.parar();
                     }
                     else{
                         outPrinter.println("572|" + mensaje);
                     }
                 }
-
-                String despedida = inReader.readLine();
-                System.out.println(despedida);
             }
             socketServicio.close();
 

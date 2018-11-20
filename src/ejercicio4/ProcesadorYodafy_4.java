@@ -1,4 +1,4 @@
-package servidor.ejercicio4;
+package ejercicio4;
 
 //
 // YodafyServidorIterativo
@@ -21,7 +21,7 @@ import java.util.Random;
 // Nota: si esta clase extendiera la clase Thread, y el procesamiento lo hiciera el método "run()",
 // ¡Podríamos realizar un procesado concurrente! 
 //
-public class ProcesadorYodafy {
+public class ProcesadorYodafy_4 {
 	DatagramSocket socketServicio;
         DatagramPacket paquete; 
         byte []buferRecepcion = new byte[256];
@@ -32,7 +32,7 @@ public class ProcesadorYodafy {
 	private Random random;
         
 	// Constructor que tiene como parámetro una referencia al socket abierto en por otra clase
-	public ProcesadorYodafy(DatagramSocket socketServicio) {
+	public ProcesadorYodafy_4(DatagramSocket socketServicio) {
 		this.socketServicio=socketServicio;
 		random=new Random();
 	}

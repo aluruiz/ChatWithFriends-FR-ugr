@@ -135,21 +135,19 @@ public class Procesador extends Thread{
                         }
                         break;
                     case "393": //Piplup
-                        //outPrinter.println("Sesión cerrada");
                         if (online.sala == "celeste"){
                             salaactual = servidor.celeste;
+                            sacarDeLaSala(online.nombre, servidor.celeste);
                         }
                         else if (online.sala == "azafran"){
                             salaactual = servidor.azafran;
+                            sacarDeLaSala(online.nombre, servidor.azafran);
                         }
                         else if (online.sala == "lavacalda"){
                             salaactual = servidor.lavacalda;
+                            sacarDeLaSala(online.nombre, servidor.lavacalda);
                         }
-                        for (Usuario user: salaactual){
-                            OutputStream salaoutputStream = user.sesion.getOutputStream();
-                            PrintWriter salaoutPrinter = new PrintWriter(salaoutputStream, true);
-                            salaoutPrinter.println(online.nombre + " ha salido de la sala");
-                        }
+                        
                         break;
                     default:
                         System.out.println("ERROR");
@@ -199,5 +197,13 @@ public class Procesador extends Thread{
         System.out.println("Ha salido bien de crear usuario");
         return "152"; //se ha creado el nuevo usuario
     }
+        
+       void sacarDeLaSala(String user, ArrayList<Usuario> sala){
+           for (Usuario users : sala) {
+            if (users.nombre.equals(user)){
+                sala.remove(user);
+            }
+        }
+       }
 
 }

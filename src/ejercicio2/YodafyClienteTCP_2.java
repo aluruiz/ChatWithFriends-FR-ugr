@@ -1,4 +1,4 @@
-package cliente.ejercicio2;
+package ejercicio2;
 
 //
 // YodafyServidorIterativo
@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class YodafyClienteTCP {
+public class YodafyClienteTCP_2 {
 
 	public static void main(String[] args) {
 		
